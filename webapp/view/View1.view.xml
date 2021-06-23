@@ -1,0 +1,90 @@
+<mvc:View 
+    xmlns:core="sap.ui.core"
+    controllerName="Bancolombia.invoces.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+                    <Panel headerText="{i18n>SelectionScreen} ">
+                        <Label id="labelShipName"  text="{i18n>ShipName}" class="sapUiSmallMargin" ></Label>
+                        <Input id="ShipName" value ="{selectionScreen>ShipName}" width="200px"  class="sapUiSmallMarginEnd" ></Input>
+                        <Label id="labelCountry"  text="{i18n>Country}" class="sapUiSmallMargin"></Label>
+             
+                    <Select 
+                        selectedKey="{selectionScreen>/CountryKey}"
+                        forceSelection="false"
+                        items="{selectionScreen>/Countries}">
+                        
+                        <items>
+                            <core:Item key="{selectionScreen>Key}" text="{selectionScreen>Text}"></core:Item>
+                        </items>
+                    </Select>  
+                      <Button id="btnFilters" 
+                              text="{i18n>btnFilter}" 
+                              icon="sap-icon://filter" 
+                              press="onFilter" 
+                              class="sapUiSmallMarginEnd">
+                        </Button>  
+                    <Button id="btnClearFilters" 
+                              text="{i18n>btnClearFilter}" 
+                              icon="sap-icon://clear-filter" 
+                              press="onClearFilter" 
+                              class="sapUiSmallMarginEnd">
+                     </Button>  
+
+
+
+                    </Panel>
+
+                    <Panel >
+                        <List 
+                            id ="InvoicesList"
+                            headerText="{i18n>InvoicesHeaderList}"
+                            class ="sapUiResponsiveMargin"
+                            width="auto"
+                            
+                            items = "{/Invoices}">
+                            <!-- Con la propiedad items se vincula los items de este listado con el Modelo -->
+                            
+                            <items >
+                            <!-- Agregacion items-->
+                            <!-- Cada registro lo representamos con el Objeto ObjectListItem-->
+                            <!-- Usar otro modelo selectionScreen definido en el controlador-->
+                            <!-- Podemos generar un estado con la propiedad numberState-->
+                                <ObjectListItem 
+                                        title ="{ShipName} - {Country}"
+                                        number="{parts :[ {path:'ExtendedPrice'},
+                                                          {path:'selectionScreen>/Moneda'}
+                                                        ],
+                                                 type:'sap.ui.model.type.Currency',
+                                                 formatOptions:{
+                                                                showMeasure:false
+                                                                }
+                                                 }"
+                                        numberUnit="{selectionScreen>/Moneda}"
+                                        numberState="{= ${ExtendedPrice} > 100 ? 'Success': 'Warning'}"
+                                        >
+                                        
+                                </ObjectListItem>
+                                
+                            </items>
+                        </List>
+
+
+                    </Panel> 
+                        
+
+
+
+                    </content>
+
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
